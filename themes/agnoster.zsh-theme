@@ -193,14 +193,15 @@ prompt_mai() {
   if [ ! -f ~/.config/mai/last_update.yaml ]; then
     return;
   fi;
+  MAI_WARN_TIME=${MAI_WARN_TIME:-1200};
   MAI_LAST_UPDATE=$(cat ~/.config/mai/last_update.yaml)
   MAI_PROFILE=$(echo $MAI_LAST_UPDATE | cut -d " " -f 2 | cut -d "," -f 1);
   MAI_PROFILE_TIME=$(echo $MAI_LAST_UPDATE | cut -d " " -f 4 | cut -d "." -f 1);
   MAI_TIMER=$(( $(date +%s) - $MAI_PROFILE_TIME ));
-  if [ $MAI_TIMER -le 1800 ]; then
+  if [ $MAI_TIMER -le $MAI_WARN_TIME ]; then
     prompt_segment green black
   fi;
-  if [ $MAI_TIMER -lt 3600 -a $MAI_TIMER -gt 1800 ]; then
+  if [ $MAI_TIMER -lt 3600 -a $MAI_TIMER -gt $MAI_WARN_TIME ]; then
     prompt_segment yellow black
   fi;
   if [ $MAI_TIMER -lt 3600 ]; then
